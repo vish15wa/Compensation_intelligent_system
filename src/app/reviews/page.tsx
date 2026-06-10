@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ReviewsPage from "./ReviewsClient";
+import ReviewsPage from "./reviews-client";
 
 export const metadata: Metadata = {
   title: "Company Reviews | PayLens",

@@ -1,5 +1,5 @@
 import { compensationService } from "@/server/services/compensation.service";
-import CompanyAnalytics from "@/features/companies/CompanyAnalytics";
+import CompanyAnalytics from "@/components/companies/CompanyAnalytics";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import BenefitsClient from "./BenefitsClient";
+import BenefitsClient from "./benefits-client";
 
 export const metadata: Metadata = {
   title: "Benefits Comparison | PayLens",

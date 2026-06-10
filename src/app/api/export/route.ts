@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { compensationRepository } from "@/server/repositories/compensation.repository";
-import { rateLimit, getClientIp } from "@/lib/middleware/rateLimiter";
+import { rateLimit, getClientIp } from "@/server/middleware/rateLimiter";
 import prisma from "@/lib/prisma";
 
 export async function GET(request: Request) {

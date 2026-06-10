@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { comparisonService } from "@/server/services/comparison.service";
-import { rateLimit, getClientIp } from "@/lib/middleware/rateLimiter";
+import { rateLimit, getClientIp } from "@/server/middleware/rateLimiter";
 
 export async function GET(request: Request) {
   try {

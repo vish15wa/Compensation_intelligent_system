@@ -8,7 +8,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { formatINR } from "@/lib/utils/normalization";
-import { useComparisonStore } from "@/store/comparisonStore";
+import { useComparisonStore } from "@/lib/stores/comparisonStore";
 import { 
   User as UserIcon, 
   Trash2, 

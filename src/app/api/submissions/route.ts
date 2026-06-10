@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { compensationService } from "@/server/services/compensation.service";
 import { submissionSchema } from "@/lib/validations/schemas";
-import { rateLimit, getClientIp } from "@/lib/middleware/rateLimiter";
+import { rateLimit, getClientIp } from "@/server/middleware/rateLimiter";
 
 export async function POST(request: Request) {
   try {

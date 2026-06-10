@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { comparisonService } from "@/server/services/comparison.service";
 import { savedComparisonSchema } from "@/lib/validations/schemas";
-import { rateLimit, getClientIp } from "@/lib/middleware/rateLimiter";
+import { rateLimit, getClientIp } from "@/server/middleware/rateLimiter";
 
 export async function GET() {
   try {
