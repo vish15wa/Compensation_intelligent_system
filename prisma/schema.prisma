@@ -1,0 +1,163 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                 String              @id @default(cuid())
+  name               String?
+  email              String?             @unique
+  emailVerified      DateTime?
+  image              String?
+  accounts           Account[]
+  sessions           Session[]
+  submissions        CompensationEntry[]
+  savedComparisons   SavedComparison[]
+  reviews            CompanyReview[]
+  reviewVotes        ReviewVote[]
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+}
+
+model VerificationToken {
+  id         String   @id @default(cuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Company {
+  id            String              @id @default(cuid())
+  name          String              @unique
+  slug          String              @unique
+  logoUrl       String?
+  compensations CompensationEntry[]
+  reviews       CompanyReview[]
+  benefits      CompanyBenefit[]
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+}
+
+model Role {
+  id            String              @id @default(cuid())
+  name          String              @unique
+  compensations CompensationEntry[]
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+}
+
+model CompensationEntry {
+  id                String   @id @default(cuid())
+  userId            String?  
+  user              User?    @relation(fields: [userId], references: [id])
+  companyId         String
+  company           Company  @relation(fields: [companyId], references: [id])
+  roleId            String
+  role              Role     @relation(fields: [roleId], references: [id])
+  level             String   
+  location          String   
+  yoe               Int      
+  yoeAtCompany      Int      
+  base              Float
+  bonus             Float    @default(0)
+  stock             Float    @default(0)
+  totalCompensation Float
+  currency          String   @default("INR")
+  submittedAt       DateTime @default(now())
+}
+
+model SavedComparison {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  queryParams String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CompanyReview {
+  id              String   @id @default(cuid())
+  companyId       String
+  userId          String?
+  rating          Int
+  title           String
+  pros            String
+  cons            String
+  isCurrentEmployee Boolean @default(true)
+  designation     String?
+  location        String?
+  isAnonymous     Boolean  @default(true)
+  status          ReviewStatus @default(APPROVED)
+  helpfulCount    Int          @default(0)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id])
+  user    User?   @relation(fields: [userId], references: [id])
+  votes   ReviewVote[]
+}
+
+model ReviewVote {
+  id       String @id @default(cuid())
+  reviewId String
+  userId   String
+  user     User   @relation(fields: [userId], references: [id])
+
+  review CompanyReview @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  @@unique([reviewId, userId])
+}
+
+model CompanyBenefit {
+  id          String   @id @default(cuid())
+  companyId   String
+  name        String
+  category    String
+  description String?
+  avgRating   Float?
+  createdAt   DateTime @default(now())
+
+  company Company @relation(fields: [companyId], references: [id])
+
+  @@unique([companyId, name])
+}
